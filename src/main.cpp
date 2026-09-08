@@ -7,13 +7,18 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 ThreeWire myWire(7, 6, 8);
 RtcDS1302<ThreeWire> Rtc(myWire);
+int buttonPin = 12;
+int buttonState = 0;
+int buzzer = 10;
+
 
 void setup() {
   lcd.init();
   lcd.backlight();
   lcd.clear();
-
   Rtc.Begin();
+  pinMode(buttonPin, INPUT);
+  pinMode(buzzer, OUTPUT);
 
   // Uncomment this ONCE to set the RTC to your computer's
   // compile date and time:
@@ -55,4 +60,11 @@ void loop() {
   lcd.print(now.Second());
 
   delay(500);
-}
+
+  buttonState = digitalRead(buttonPin);
+  if (buttonState == HIGH) {
+    digitalWrite(buzzer, HIGH);
+  } else {
+    digitalWrite(buzzer, LOW);
+  }
+ }
